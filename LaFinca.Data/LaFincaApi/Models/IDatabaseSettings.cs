@@ -9,6 +9,7 @@ namespace LaFincaApi.Models
     {
         string ItemsCollectionName { get; set; }
         string UsersCollectionName { get; set; }
+        string OrdersCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }
@@ -17,13 +18,15 @@ namespace LaFincaApi.Models
     {
         public string UsersCollectionName { get; set; }
         public string ItemsCollectionName { get; set; }
+        public string OrdersCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
 
         public LaFincaDatabaseSettings()
         {
             UsersCollectionName = "Users";
-            //ItemsCollectionName = "Items";
+            ItemsCollectionName = "MenuItems";
+            OrdersCollectionName = "Orders";
             ConnectionString = "mongodb://localhost:27017";
             DatabaseName = "LaFinca";
         }
