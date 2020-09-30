@@ -62,6 +62,19 @@ namespace LaFincaApi.Controllers
             return NoContent();
         }
 
+        public IActionResult Delete(string id)
+        {
+            if (_itemService.DoesItemExist(id))
+            {
+                _itemService.Remove(itemName: id);
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
         private void UpdateItem(MenuItem exisitingItem, MenuItem updatedItem)
         {
             if (exisitingItem.Category != updatedItem.Category) exisitingItem.Category = updatedItem.Category;
