@@ -63,6 +63,19 @@ namespace LaFincaApi.Controllers
             return NoContent();
         }
 
+        public IActionResult CancleOrder(string id)
+        {
+            Order order = _orderService.GetOrderById(id);
+            if (order == null) return NotFound();
+            order.State = "cacnled";
+            _orderService.UpdateOrder(order);
+            return NoContent();
+        }
+
+        private void ChangeState(string state, Order order)
+        {
+            order.State = state;
+        }
 
 
         public IActionResult Update(Order updatedOder)
@@ -76,6 +89,17 @@ namespace LaFincaApi.Controllers
             {
                 return NotFound();
             }
+        }
+
+        public ActionResult<List<Order>> Delete(string id)
+        {
+            Order order = _orderService.GetOrderById(id);
+            if(order != null)
+            {
+                _orderService.Delete(id);
+            }
+
+            return ViewAll();
         }
 
 

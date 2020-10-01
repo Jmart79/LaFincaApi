@@ -16,7 +16,7 @@ namespace LaFincaApi.Models
         public string OrderPlaced { get; set; }
         public string OrderReady { get; set; } = null;
         public string State { get; set; }
-        public List<string> ItemNames { get; set; }
+        public List<string> Items { get; set; }
 
         public Order() { }
 
@@ -28,7 +28,7 @@ namespace LaFincaApi.Models
             this.State = state;
             this.Cost = cost;
             this.FinalCost = cost * .0625;
-            this.ItemNames = names;
+            this.Items = names;
         }
 
     }

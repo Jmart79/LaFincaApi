@@ -85,7 +85,7 @@ namespace LaFincaApi.Services
         {
             if (previousOrder.State != updatedOrder.State) previousOrder.State = updatedOrder.State;
             if (previousOrder.Cost != updatedOrder.Cost) previousOrder.Cost = updatedOrder.Cost;
-            if (previousOrder.ItemNames != updatedOrder.ItemNames) previousOrder.ItemNames = updatedOrder.ItemNames;
+            if (previousOrder.Items != updatedOrder.Items) previousOrder.Items = updatedOrder.Items;
             if (previousOrder.OrderReady != updatedOrder.OrderReady) previousOrder.OrderReady = updatedOrder.OrderReady;
             return previousOrder;
         }
