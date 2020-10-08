@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Net.Http.Headers;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,7 @@ namespace LaFincaApi.Models
 
         public MenuItemService(IDatabaseSettings settings)
         {
-            IMongoDatabase database = GetDatabase();
             _settings = settings;
-
             SwitchToMenu();
         }
 
@@ -26,19 +25,14 @@ namespace LaFincaApi.Models
 
             return db;
         }
-
-        private void SwitchToFavorites() 
-        {
-            IMongoDatabase db = GetDatabase();
-            _items = db.GetCollection<MenuItem>(_settings.FavoriteItemsCollectionName);
-        }
-
+        
         private void SwitchToMenu() 
         {
             IMongoDatabase db = GetDatabase();
             _items = db.GetCollection<MenuItem>(_settings.ItemsCollectionName);
         }
 
+        
         public List<MenuItem> Get()
         {
             return _items.Find(item => true).ToList<MenuItem>();

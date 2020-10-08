@@ -25,5 +25,10 @@ namespace LaFincaApi.Services
             return db;
         }
 
+        public List<MenuItem> GetFavorites(string username)
+        {
+
+        }
+
     }
 }
