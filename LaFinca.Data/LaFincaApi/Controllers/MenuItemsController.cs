@@ -76,6 +76,12 @@ namespace LaFincaApi.Controllers
             }
         }
 
+        public IActionResult FavorItem([FromQuery(Name ="username")] string username, [FromQuery(Name ="itemName")] string itemName)
+        {
+
+            return NotFound();
+        }
+
         private void UpdateItem(MenuItem exisitingItem, MenuItem updatedItem)
         {
             if (exisitingItem.Category != updatedItem.Category) exisitingItem.Category = updatedItem.Category;

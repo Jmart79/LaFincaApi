@@ -8,14 +8,35 @@ namespace LaFincaApi.Models
 {
     public class MenuItemService
     {
-        private readonly IMongoCollection<MenuItem> _items;
+        private  IMongoCollection<MenuItem> _items;
+        private readonly IDatabaseSettings _settings;
 
         public MenuItemService(IDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
+            IMongoDatabase database = GetDatabase();
+            _settings = settings;
 
-            _items = database.GetCollection<MenuItem>(settings.ItemsCollectionName);
+            SwitchToMenu();
+        }
+
+        private IMongoDatabase GetDatabase()
+        {
+            var client = new MongoClient(_settings.ConnectionString);
+            IMongoDatabase db = client.GetDatabase(_settings.DatabaseName);
+
+            return db;
+        }
+
+        private void SwitchToFavorites() 
+        {
+            IMongoDatabase db = GetDatabase();
+            _items = db.GetCollection<MenuItem>(_settings.FavoriteItemsCollectionName);
+        }
+
+        private void SwitchToMenu() 
+        {
+            IMongoDatabase db = GetDatabase();
+            _items = db.GetCollection<MenuItem>(_settings.ItemsCollectionName);
         }
 
         public List<MenuItem> Get()
