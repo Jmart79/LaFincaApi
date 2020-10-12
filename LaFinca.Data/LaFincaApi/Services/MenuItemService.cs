@@ -1,4 +1,5 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.Net.Http.Headers;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +9,30 @@ namespace LaFincaApi.Models
 {
     public class MenuItemService
     {
-        private readonly IMongoCollection<MenuItem> _items;
+        private  IMongoCollection<MenuItem> _items;
+        private readonly IDatabaseSettings _settings;
 
         public MenuItemService(IDatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
-
-            _items = database.GetCollection<MenuItem>(settings.ItemsCollectionName);
+            _settings = settings;
+            SwitchToMenu();
         }
 
+        private IMongoDatabase GetDatabase()
+        {
+            var client = new MongoClient(_settings.ConnectionString);
+            IMongoDatabase db = client.GetDatabase(_settings.DatabaseName);
+
+            return db;
+        }
+        
+        private void SwitchToMenu() 
+        {
+            IMongoDatabase db = GetDatabase();
+            _items = db.GetCollection<MenuItem>(_settings.ItemsCollectionName);
+        }
+
+        
         public List<MenuItem> Get()
         {
             return _items.Find(item => true).ToList<MenuItem>();
@@ -65,7 +80,7 @@ namespace LaFincaApi.Models
 
         public void Remove(string itemName = null, MenuItem item = null)
         {
-            if (!DoesItemExist(itemName))
+            if (DoesItemExist(itemName))
             {
                 _items.DeleteOne(item => item.ItemName == itemName);
             }

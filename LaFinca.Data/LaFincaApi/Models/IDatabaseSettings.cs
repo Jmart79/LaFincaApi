@@ -5,11 +5,12 @@ using System.Threading.Tasks;
 
 namespace LaFincaApi.Models
 {
-   public interface IDatabaseSettings
+    public interface IDatabaseSettings
     {
         string ItemsCollectionName { get; set; }
         string UsersCollectionName { get; set; }
         string OrdersCollectionName { get; set; }
+        string FavoriteItemsCollectionName { get; set; }
         string ConnectionString { get; set; }
         string DatabaseName { get; set; }
     }
@@ -19,6 +20,7 @@ namespace LaFincaApi.Models
         public string UsersCollectionName { get; set; }
         public string ItemsCollectionName { get; set; }
         public string OrdersCollectionName { get; set; }
+        public string FavoriteItemsCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
 
@@ -27,6 +29,7 @@ namespace LaFincaApi.Models
             UsersCollectionName = "Users";
             ItemsCollectionName = "MenuItems";
             OrdersCollectionName = "Orders";
+            FavoriteItemsCollectionName = "FavoriteItems";
             ConnectionString = "mongodb://localhost:27017";
             DatabaseName = "LaFinca";
         }

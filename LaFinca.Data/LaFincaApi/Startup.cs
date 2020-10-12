@@ -33,8 +33,10 @@ namespace LaFincaApi
                 );
 
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<LaFincaDatabaseSettings>>().Value);
+
             services.AddSingleton<UserService>();
             services.AddSingleton<MenuItemService>();
+            services.AddSingleton<OrderService>();
 
             services.AddControllers().AddNewtonsoftJson(Options => Options.UseMemberCasing());
 

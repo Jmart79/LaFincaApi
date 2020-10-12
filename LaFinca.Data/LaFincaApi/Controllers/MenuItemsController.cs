@@ -17,6 +17,7 @@ namespace LaFincaApi.Controllers
             _itemService = service;
         }
 
+        [HttpGet]
         public ActionResult<List<MenuItem>> ViewAll()
         {
             return _itemService.Get();
@@ -50,16 +51,35 @@ namespace LaFincaApi.Controllers
             return ViewAll();
         }
 
-        public IActionResult Update(string itemName, MenuItem item)
+        public IActionResult Update( MenuItem item)
         {
-            MenuItem foundItem = _itemService.GetByName(itemName);
+            MenuItem foundItem = _itemService.GetByName(item.ItemName);
             if (foundItem == null)
             {
                 return NotFound();
             }
             UpdateItem(foundItem, item);
-            _itemService.Update(itemName, foundItem);
+            _itemService.Update(item.ItemName, foundItem);
             return NoContent();
+        }
+
+        public IActionResult Delete(string id)
+        {
+            if (_itemService.DoesItemExist(id))
+            {
+                _itemService.Remove(itemName: id);
+                return NoContent();
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        public IActionResult FavorItem([FromQuery(Name ="username")] string username, [FromQuery(Name ="itemName")] string itemName)
+        {
+
+            return NotFound();
         }
 
         private void UpdateItem(MenuItem exisitingItem, MenuItem updatedItem)
