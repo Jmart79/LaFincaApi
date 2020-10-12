@@ -80,7 +80,7 @@ namespace LaFincaApi.Models
 
         public void Remove(string itemName = null, MenuItem item = null)
         {
-            if (!DoesItemExist(itemName))
+            if (DoesItemExist(itemName))
             {
                 _items.DeleteOne(item => item.ItemName == itemName);
             }

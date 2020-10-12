@@ -27,7 +27,7 @@ namespace LaFincaApi.Services
 
         public List<MenuItem> GetFavorites(string username)
         {
-
+            return null;
         }
 
     }
