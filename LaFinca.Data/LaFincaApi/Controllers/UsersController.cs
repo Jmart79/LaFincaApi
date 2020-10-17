@@ -49,16 +49,20 @@ namespace LaFincaApi.Controller
 
         public IActionResult Update(string id, IUser user)
         {
-            IUser foundUser = _userService.Get(id);
+            IUser foundUser = _userService.Get(user.username);
 
             if (foundUser == null)
             {
                 return NotFound();
             }
+            else
+            {
+                UpdateUser(foundUser, user);
 
-            UpdateUser(foundUser, user);
+                _userService.Update(id, foundUser);
 
-            _userService.Update(id, foundUser);
+            }
+
 
             return NoContent();
         }
