@@ -24,6 +24,24 @@ namespace LaFincaApi.Controllers
             return _orderService.Get();
         }
 
+        public ActionResult<List<Order>> CreateOrder(double cost, string CustomerUsername, List<string> items)
+        {
+            Order order = new Order
+            {
+                Cost = cost,
+                CustomerUsername = CustomerUsername,
+                OrderPlaced = DateTime.Today.ToString(),
+                State = "Ordered",
+                Items = items
+            };
+            Order foundOrder = _orderService.GetOrderById(order.OrderId);
+            if(foundOrder == null)
+            {
+                _orderService.Create(order);
+            }
+            return _orderService.Get();
+        }
+
         public ActionResult<List<Order>> ViewAllByUser([FromQuery(Name = "username")] string username)
         {
             return _orderService.GetOrdersByCustomer(username);
