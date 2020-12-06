@@ -70,6 +70,7 @@ namespace LaFincaApi.Services
             if(favoriteItem != null)
             {
                 favoriteItem.AddItem(itemName);
+                _favoriteItems.ReplaceOne(favItem => favItem.Username == username,favoriteItem);
                 WasFavored = true;
             }
             else
@@ -89,6 +90,7 @@ namespace LaFincaApi.Services
             if (favoriteItem != null)
             {
                 favoriteItem.RemoveItem(itemName);
+                _favoriteItems.ReplaceOne(favItem => favItem.Username == username, favoriteItem);
                 WasUnFavored = true;
             }
 

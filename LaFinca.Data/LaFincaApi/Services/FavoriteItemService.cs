@@ -9,12 +9,12 @@ namespace LaFincaApi.Services
 {
     public class FavoriteItemService
     {
-        private readonly IMongoCollection<MenuItem> _favorites;
+        private readonly IMongoCollection<FavoriteItem> _favorites;
 
         public FavoriteItemService(IDatabaseSettings settings)
         {
             IMongoDatabase db = GetDatabase(settings);
-            _favorites = db.GetCollection<MenuItem>(settings.FavoriteItemsCollectionName);
+            _favorites = db.GetCollection<FavoriteItem>(settings.FavoriteItemsCollectionName);
         }
 
         private IMongoDatabase GetDatabase(IDatabaseSettings settings)
@@ -25,7 +25,7 @@ namespace LaFincaApi.Services
             return db;
         }
 
-        public List<MenuItem> GetFavorites(string username)
+        public List<FavoriteItem> GetFavorites(string username)
         {
             return null;
         }
