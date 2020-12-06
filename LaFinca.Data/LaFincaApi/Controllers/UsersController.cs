@@ -13,10 +13,12 @@ namespace LaFincaApi.Controller
     public class UsersController : ControllerBase
     {
         private readonly UserService _userService;
+        private readonly FavoriteItemService _favoritesService;
 
-        public UsersController(UserService service)
+        public UsersController(UserService service,FavoriteItemService  favService)
         {
             _userService = service;
+            _favoritesService = favService;
         }
 
         public ActionResult<List<IUser>> ViewAll() =>
@@ -44,6 +46,9 @@ namespace LaFincaApi.Controller
 
             return ViewAll();
         }
+
+
+
 
         
 

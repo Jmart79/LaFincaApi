@@ -35,6 +35,7 @@ namespace LaFincaApi
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<LaFincaDatabaseSettings>>().Value);
 
             services.AddSingleton<UserService>();
+            services.AddSingleton<FavoriteItemService>();
             services.AddSingleton<MenuItemService>();
             services.AddSingleton<OrderService>();
 

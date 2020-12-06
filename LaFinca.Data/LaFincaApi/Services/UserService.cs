@@ -11,6 +11,7 @@ namespace LaFincaApi.Services
     public class UserService
     {
         private readonly IMongoCollection<IUser> _users;
+        private readonly IMongoCollection<FavoriteItem> _favoriteItems;
         
         public UserService(IDatabaseSettings settings)
         {
@@ -18,6 +19,7 @@ namespace LaFincaApi.Services
             var database = client.GetDatabase(settings.DatabaseName);
 
             _users = database.GetCollection<IUser>(settings.UsersCollectionName);
+            _favoriteItems = database.GetCollection<FavoriteItem>(settings.FavoriteItemsCollectionName);
         }
 
         public List<IUser> Get()
@@ -52,12 +54,45 @@ namespace LaFincaApi.Services
         public bool Update(string id, IUser updatedUser)
         {
             bool ResponseMessage = false;
-            if(DoesUserExist(username: id))
+            if(DoesUserExist(username: updatedUser.username))
             {
-                _users.ReplaceOne(user => user.username == id, updatedUser);
+                _users.ReplaceOne(user => user.username == updatedUser.username, updatedUser);
                 ResponseMessage = true;
             }
             return ResponseMessage;
+        }
+
+        public bool FavorItem(string username, string itemName)
+        {
+            FavoriteItem favoriteItem = _favoriteItems.Find(favItem => favItem.Username == username) as FavoriteItem;
+            bool WasFavored = false;
+
+            if(favoriteItem != null)
+            {
+                favoriteItem.AddItem(itemName);
+                WasFavored = true;
+            }
+            else
+            {
+                favoriteItem = new FavoriteItem(username, new string[] { itemName });
+                _favoriteItems.InsertOne(favoriteItem);
+                WasFavored = true;
+            }
+            return WasFavored;
+        }
+
+        public bool UnFavorItem(string username, string itemName)
+        {
+            FavoriteItem favoriteItem = _favoriteItems.Find(favItem => favItem.Username == username) as FavoriteItem;
+            bool WasUnFavored = false;
+
+            if (favoriteItem != null)
+            {
+                favoriteItem.RemoveItem(itemName);
+                WasUnFavored = true;
+            }
+
+            return WasUnFavored;
         }
 
         public void Remove(IUser user) =>

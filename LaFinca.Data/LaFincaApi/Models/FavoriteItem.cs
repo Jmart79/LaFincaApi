@@ -18,6 +18,7 @@ namespace LaFincaApi.Models
         [BsonElement("Favorites")]
         [JsonProperty("Favorites")]
         public string[] Favorites { get; set; }
+        private List<string> favorites { get; set; }
 
         public FavoriteItem() { }
 
@@ -25,6 +26,20 @@ namespace LaFincaApi.Models
         {
             this.Username = username;
             this.Favorites = favories;
+        }
+
+        public void AddItem(string itemName)
+        {
+            favorites.Add(itemName);
+
+            Favorites = favorites.ToArray();
+        }
+
+        public void RemoveItem(string itemName)
+        {
+            favorites.Remove(itemName);
+
+            Favorites = favorites.ToArray();
         }
 
 
