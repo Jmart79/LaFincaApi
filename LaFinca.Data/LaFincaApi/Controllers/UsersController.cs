@@ -36,6 +36,13 @@ namespace LaFincaApi.Controller
             return user;
         }
 
+        public ActionResult<List<FavoriteItem>> GetFavorites(string username)
+        {
+            List<FavoriteItem> favorites = _userService.GetFavorites(username);
+
+            return favorites;
+        }
+
         public ActionResult<List<IUser>> Create(IUser user)
         {
             if(!_userService.DoesUserExist(username: user.username,email: user.email))
@@ -47,9 +54,19 @@ namespace LaFincaApi.Controller
             return ViewAll();
         }
 
+        public ActionResult<List<FavoriteItem>> FavorItem(string username, string itemName)
+        {
+            bool WasFavored = _userService.FavorItem(username, itemName);
 
+            return _userService.GetFavorites(username);
+        }
 
+        public ActionResult<List<FavoriteItem>> UnFavorItem([FromQuery(Name = "username")] string username, [FromQuery(Name = "itemName")] string itemName)
+        {
+            bool WasUnFavored = _userService.UnFavorItem(username, itemName);
 
+            return _userService.GetFavorites(username);
+        }
         
 
         public IActionResult Update(string id, IUser user)

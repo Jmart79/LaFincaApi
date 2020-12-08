@@ -1,5 +1,6 @@
 ﻿
 using LaFincaApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,14 @@ namespace LaFincaApi.Services
             }
             return WasFavored;
         }
+
+        public List<FavoriteItem> GetFavorites(string username)
+        {
+            List<FavoriteItem> favoriteItemNames = _favoriteItems.Find(favItems => favItems.Username == username) as List<FavoriteItem>;
+           
+            return favoriteItemNames;
+        }
+
 
         public bool UnFavorItem(string username, string itemName)
         {
