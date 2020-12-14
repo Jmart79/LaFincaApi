@@ -29,12 +29,16 @@ namespace LaFincaApi.Models
         [JsonProperty("role")]
         public string role { get; set; }
 
+        [BsonElement("favoritesArray")]
+        [JsonProperty("favoritesArray")]
+        public string[] favoritesArray { get; set; }
+
         public IUser()
         {
 
         }
 
-        public IUser( string name, string username, string email,string password, string role)
+        public IUser( string name, string username, string email,string password, string role, string[] favoritesArray)
         {
             this.name = name;
             this.Id = new ObjectId() ;
@@ -42,6 +46,7 @@ namespace LaFincaApi.Models
             this.email = email;
             this.password = password;
             this.role = role;
+            this.favoritesArray = favoritesArray;
         }
     }
 }

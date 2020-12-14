@@ -12,7 +12,6 @@ namespace LaFincaApi.Services
     public class UserService
     {
         private readonly IMongoCollection<IUser> _users;
-        private readonly IMongoCollection<FavoriteItem> _favoriteItems;
         
         public UserService(IDatabaseSettings settings)
         {
@@ -20,7 +19,7 @@ namespace LaFincaApi.Services
             var database = client.GetDatabase(settings.DatabaseName);
 
             _users = database.GetCollection<IUser>(settings.UsersCollectionName);
-            _favoriteItems = database.GetCollection<FavoriteItem>(settings.FavoriteItemsCollectionName);
+            
         }
 
         public List<IUser> Get()
@@ -63,47 +62,42 @@ namespace LaFincaApi.Services
             return ResponseMessage;
         }
 
-        public bool FavorItem(string username, string itemName)
+        public List<string> FavorItem(string username, string itemName)
         {
-            FavoriteItem favoriteItem = _favoriteItems.Find(favItem => favItem.Username == username) as FavoriteItem;
-            bool WasFavored = false;
+            IUser user = Get(id: username);
+            List<string> favoriteItemNames = user.favoritesArray.ToList();
+            bool IsFavored = favoriteItemNames.Contains(itemName);
 
-            if(favoriteItem != null)
+            if (!IsFavored)
             {
-                favoriteItem.AddItem(itemName);
-                _favoriteItems.ReplaceOne(favItem => favItem.Username == username,favoriteItem);
-                WasFavored = true;
+                favoriteItemNames.Add(itemName);                
+                user.favoritesArray = favoriteItemNames.ToArray();
             }
-            else
-            {
-                favoriteItem = new FavoriteItem(username, new string[] { itemName });
-                _favoriteItems.InsertOne(favoriteItem);
-                WasFavored = true;
-            }
-            return WasFavored;
+
+            return favoriteItemNames; 
         }
 
-        public List<FavoriteItem> GetFavorites(string username)
+        public List<string> GetFavorites(string username)
         {
-            List<FavoriteItem> favoriteItemNames = _favoriteItems.Find(favItems => favItems.Username == username) as List<FavoriteItem>;
-           
+            IUser user = Get(id: username);
+            List<string> favoriteItemNames = user.favoritesArray.ToList();
             return favoriteItemNames;
         }
 
 
-        public bool UnFavorItem(string username, string itemName)
+        public List<string> UnFavorItem(string username, string itemName)
         {
-            FavoriteItem favoriteItem = _favoriteItems.Find(favItem => favItem.Username == username) as FavoriteItem;
-            bool WasUnFavored = false;
+            IUser user = Get(id: username);
+            List<string> favoriteItemNames = user.favoritesArray.ToList();
+            bool IsFavored = favoriteItemNames.Contains(itemName);
 
-            if (favoriteItem != null)
+            if (IsFavored)
             {
-                favoriteItem.RemoveItem(itemName);
-                _favoriteItems.ReplaceOne(favItem => favItem.Username == username, favoriteItem);
-                WasUnFavored = true;
+                favoriteItemNames.Remove(itemName);
+                user.favoritesArray = favoriteItemNames.ToArray();
             }
 
-            return WasUnFavored;
+            return favoriteItemNames;
         }
 
         public void Remove(IUser user) =>
